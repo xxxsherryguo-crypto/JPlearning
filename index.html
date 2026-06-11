@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>日語打卡手帳 · N4備考版</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Old+Mincho:wght@400;700&family=Noto+Sans+SC:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #FAF9F5;
+  --paper: #FFFFFF;
+  --ink: #21303D;
+  --indigo: #2A4073;
+  --indigo-soft: #EDF1F8;
+  --shu: #C73E3A;
+  --shu-deep: #A82F2C;
+  --shu-soft: #FBF0EF;
+  --muted: #8A8F98;
+  --line: #E7E3D8;
+  --gold: #B8965A;
+  --gold-soft: #FAF4E8;
+  --teal: #1D7A66;
+  --teal-soft: #E8F4F0;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: 'Noto Sans SC', -apple-system, sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+a { color: var(--indigo); }
+.wrap { max-width: 920px; margin: 0 auto; padding: 36px 20px 60px; }
+
+/* ---- header ---- */
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--ink);
+  margin-bottom: 18px;
+}
+.title-block h1 {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 4px;
+}
+.title-block .sub {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+.date-block { text-align: right; }
+.date-block .today { font-family: 'Zen Old Mincho', serif; font-size: 16px; letter-spacing: 1px; }
+.countdown {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-top: 4px;
+  padding: 3px 12px;
+  border: 1px solid var(--indigo);
+  border-radius: 999px;
+  font-size: 12px;
+  color: var(--indigo);
+}
+.countdown b { font-family: 'Zen Old Mincho', serif; font-size: 17px; }
+
+/* ---- phase banner ---- */
+.phase {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  background: var(--indigo-soft);
+  border-radius: 10px;
+  padding: 12px 18px;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+.phase .tag {
+  background: var(--indigo);
+  color: #fff;
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 13px;
+  letter-spacing: 2px;
+  padding: 3px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.phase .desc { color: var(--indigo); flex: 1; min-width: 200px; }
+.phase-track { display: flex; gap: 4px; }
+.phase-track span {
+  width: 26px; height: 6px; border-radius: 3px;
+  background: #CBD5E6;
+}
+.phase-track span.on { background: var(--indigo); }
+
+/* ---- layout ---- */
+.grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: 22px;
+}
+@media (max-width: 720px) { .grid { grid-template-columns: 1fr; } }
+
+.card {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 22px 24px;
+}
+.card h2 {
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  color: var(--indigo);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.card h2::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+
+/* ---- tasks ---- */
+.cat-label {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin: 14px 0 2px;
+}
+.cat-label:first-child { margin-top: 0; }
+.task {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 4px;
+  border-bottom: 1px dashed var(--line);
+  cursor: pointer;
+  user-select: none;
+}
+.task .box {
+  width: 20px; height: 20px;
+  margin-top: 3px;
+  border: 1.5px solid var(--indigo);
+  border-radius: 4px;
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  color: #fff;
+  transition: background .15s;
+}
+.task.done .box { background: var(--indigo); }
+.task .body { flex: 1; min-width: 0; }
+.task .name { display: block; }
+.task.done .name { color: var(--muted); text-decoration: line-through; }
+.task .detail { font-size: 12px; color: var(--muted); display: block; }
+.task .link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--shu);
+  text-decoration: none;
+  border: 1px solid #EBC9C7;
+  border-radius: 999px;
+  padding: 1px 10px;
+  margin-top: 4px;
+  background: var(--shu-soft);
+}
+.task .link:hover { background: var(--shu); color: #fff; }
+.task .mins { font-size: 12px; color: var(--muted); white-space: nowrap; margin-top: 4px; }
+.task .del {
+  border: none; background: none; color: var(--line);
+  cursor: pointer; font-size: 15px; padding: 2px 4px; margin-top: 2px;
+}
+.task .del:hover { color: var(--shu); }
+.special-badge {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--teal);
+  background: var(--teal-soft);
+  border-radius: 999px;
+  padding: 0 8px;
+  margin-left: 6px;
+  vertical-align: 2px;
+}
+.add-task { display: flex; gap: 8px; margin-top: 16px; }
+.add-task input {
+  flex: 1;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  background: var(--bg);
+  color: var(--ink);
+}
+.add-task input:focus { outline: none; border-color: var(--indigo); }
+.add-task button {
+  border: 1px solid var(--indigo);
+  background: none;
+  color: var(--indigo);
+  border-radius: 6px;
+  padding: 7px 14px;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.add-task button:hover { background: var(--indigo); color: #fff; }
+.progress-bar {
+  height: 6px;
+  background: var(--bg);
+  border-radius: 3px;
+  margin-top: 16px;
+  overflow: hidden;
+}
+.progress-bar i {
+  display: block;
+  height: 100%;
+  background: var(--indigo);
+  border-radius: 3px;
+  transition: width .3s;
+}
+.progress-text { font-size: 13px; color: var(--muted); margin-top: 6px; text-align: center; }
+
+/* ---- hanko ---- */
+.stamp-zone { display: flex; flex-direction: column; align-items: center; padding: 24px 0 8px; }
+.hanko {
+  width: 130px; height: 130px;
+  border-radius: 50%;
+  border: 3px solid var(--shu);
+  color: var(--shu);
+  background: none;
+  font-family: 'Zen Old Mincho', serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: transform .1s, background .15s, color .15s;
+}
+.hanko small { font-size: 11px; letter-spacing: 3px; font-weight: 400; }
+.hanko:hover:not(.stamped) { background: var(--shu-soft); }
+.hanko:active:not(.stamped) { transform: scale(.93); }
+.hanko.stamped {
+  background: var(--shu);
+  color: #fff;
+  border-color: var(--shu-deep);
+  transform: rotate(-6deg);
+  cursor: default;
+  animation: stampDown .35s cubic-bezier(.2, 2.2, .4, 1);
+}
+@keyframes stampDown {
+  0% { transform: scale(1.6) rotate(-14deg); opacity: 0; }
+  100% { transform: scale(1) rotate(-6deg); opacity: 1; }
+}
+.stamp-hint { font-size: 12px; color: var(--muted); margin-top: 14px; letter-spacing: 1px; }
+
+/* ---- stats & calendar ---- */
+.stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 22px; }
+.stat { background: var(--bg); border-radius: 8px; padding: 12px 6px; text-align: center; }
+.stat .num { font-family: 'Zen Old Mincho', serif; font-size: 24px; color: var(--shu); }
+.stat .lbl { font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+.cal-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.cal-head .month { font-family: 'Zen Old Mincho', serif; font-size: 15px; letter-spacing: 2px; }
+.cal-head button { border: none; background: none; cursor: pointer; color: var(--muted); font-size: 16px; padding: 2px 8px; }
+.cal-head button:hover { color: var(--indigo); }
+.cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; }
+.cal .wd { font-size: 11px; color: var(--muted); padding-bottom: 4px; }
+.cal .day {
+  aspect-ratio: 1;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  border-radius: 50%;
+}
+.cal .day.empty { visibility: hidden; }
+.cal .day.stamped {
+  background: var(--shu); color: #fff;
+  font-family: 'Zen Old Mincho', serif;
+  transform: rotate(-6deg);
+}
+.cal .day.today-ring { box-shadow: inset 0 0 0 1.5px var(--indigo); }
+
+/* ---- word of day ---- */
+.word-card { margin-top: 22px; text-align: center; padding: 24px; }
+.word-card .eyebrow { font-size: 11px; letter-spacing: 4px; color: var(--gold); margin-bottom: 10px; }
+.word-card .jp { font-family: 'Zen Old Mincho', serif; font-size: 32px; letter-spacing: 2px; }
+.word-card .reading { font-size: 14px; color: var(--indigo); margin-top: 2px; letter-spacing: 2px; }
+.word-card .cn { font-size: 14px; color: var(--muted); margin-top: 6px; }
+
+/* ---- resources ---- */
+.resources { margin-top: 22px; }
+.res-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+  gap: 12px;
+}
+.res {
+  display: block;
+  text-decoration: none;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 14px 16px;
+  transition: border-color .15s, transform .15s;
+}
+.res:hover { border-color: var(--indigo); transform: translateY(-2px); }
+.res .res-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.res .res-name { font-weight: 500; font-size: 14px; }
+.res .res-tag {
+  font-size: 10px;
+  letter-spacing: 1px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.res .res-tag.t-grammar { background: var(--indigo-soft); color: var(--indigo); }
+.res .res-tag.t-listen { background: var(--teal-soft); color: var(--teal); }
+.res .res-tag.t-exam { background: var(--shu-soft); color: var(--shu); }
+.res .res-tag.t-fun { background: var(--gold-soft); color: var(--gold); }
+.res .res-desc { font-size: 12px; color: var(--muted); margin-top: 5px; line-height: 1.6; }
+.res .res-use { font-size: 11px; color: var(--indigo); margin-top: 6px; }
+
+footer { text-align: center; margin-top: 36px; font-size: 12px; color: var(--muted); letter-spacing: 2px; }
+@media (prefers-reduced-motion: reduce) {
+  .hanko.stamped { animation: none; }
+  .res:hover { transform: none; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title-block">
+      <h1>日語打卡手帳</h1>
+      <div class="sub">N4 備考版 ─ 日々の積み重ね</div>
+    </div>
+    <div class="date-block">
+      <div class="today" id="todayText"></div>
+      <div class="countdown">距 N4 考试（12月6日）还有 <b id="countdownNum">—</b> 天</div>
+    </div>
+  </header>
+
+  <div class="phase">
+    <span class="tag" id="phaseTag">—</span>
+    <span class="desc" id="phaseDesc">—</span>
+    <span class="phase-track" id="phaseTrack"><span></span><span></span><span></span><span></span></span>
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>今日の課題</h2>
+      <div id="taskList"></div>
+      <div class="add-task">
+        <input type="text" id="newTaskInput" placeholder="添加自定义任务…" maxlength="60">
+        <button id="addTaskBtn">追加</button>
+      </div>
+      <div class="progress-bar"><i id="progressFill" style="width:0%"></i></div>
+      <div class="progress-text" id="progressText"></div>
+      <div class="stamp-zone">
+        <button class="hanko" id="hankoBtn">
+          <span id="hankoMain">打卡</span>
+          <small id="hankoSub">CHECK IN</small>
+        </button>
+        <div class="stamp-hint" id="stampHint">完成今日学习后，盖上你的印章</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>記録</h2>
+        <div class="stats">
+          <div class="stat"><div class="num" id="streakNum">0</div><div class="lbl">连续天数</div></div>
+          <div class="stat"><div class="num" id="totalNum">0</div><div class="lbl">累计打卡</div></div>
+          <div class="stat"><div class="num" id="monthNum">0</div><div class="lbl">本月打卡</div></div>
+        </div>
+        <div class="cal-head">
+          <button id="prevMonth" aria-label="上个月">‹</button>
+          <div class="month" id="calMonth"></div>
+          <button id="nextMonth" aria-label="下个月">›</button>
+        </div>
+        <div class="cal" id="calendar"></div>
+      </div>
+
+      <div class="card word-card">
+        <div class="eyebrow">今日の言葉 · N4</div>
+        <div class="jp" id="wordJp"></div>
+        <div class="reading" id="wordReading"></div>
+        <div class="cn" id="wordCn"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="card resources">
+    <h2>学習リソース</h2>
+    <div class="res-grid">
+      <a class="res" href="https://www.youtube.com/@cijapanese" target="_blank" rel="noopener">
+        <div class="res-top"><span class="res-name">Comprehensible Japanese</span><span class="res-tag t-listen">听力沉浸</span></div>
+        <div class="res-desc">缓慢清晰的全日语讲解，配合手势和图画，初学者也能直接听懂，培养日语思维。</div>
+        <div class="res-use">▸ 每天1～2集，从 Complete Beginner 列表开始</div>
+      </a>
+      <a class="res" href="https://www.youtube.com/@JapaneseAmmowithMisa" target="_blank" rel="noopener">
+        <div class="res-top"><span class="res-name">Japanese Ammo with Misa</span><span class="res-tag t-grammar">语法精讲</span></div>
+        <div class="res-desc">从零基础到N5/N4的完整语法课程，例句丰富，会用颜色标注语法结构、展示常见错误。</div>
+        <div class="res-use">▸ 配合教材，每周3集语法课</div>
+      </a>
+      <a class="res" href="https://www.youtube.com/@JapanesePod101" target="_blank" rel="noopener">
+        <div class="res-top"><span class="res-name">JapanesePod101</span><span class="res-tag t-grammar">系统课程</span></div>
+        <div class="res-desc">按JLPT等级划分的播放列表，N5/N4内容讲解详尽，涵盖词汇、语法和听力。</div>
+        <div class="res-use">▸ 9月起跟 N4 播放列表系统学习</div>
+      </a>
+      <a class="res" href="https://www.youtube.com/@nihongonomori2013" target="_blank" rel="noopener">
+        <div class="res-top"><span class="res-name">日本語の森</span><span class="res-tag t-exam">JLPT备考</span></div>
+        <div class="res-desc">全母语者讲师，内容与JLPT考点紧密对应，讲解风格高能有趣。</div>
+        <div class="res-use">▸ 10月后冲刺阶段重点使用</div>
+      </a>
+      <a class="res" href="https://www.youtube.com/@mikurealjapanese" target="_blank" rel="noopener">
+        <div class="res-top"><span class="res-name">Miku Real Japanese</span><span class="res-tag t-fun">轻松日常</span></div>
+        <div class="res-desc">教科书知识结合自然日常用语，有趣味小品和街头采访，适合放松时观看。</div>
+        <div class="res-use">▸ 睡前或周末轻松学</div>
+      </a>
+      <a class="res" href="https://www3.nhk.or.jp/news/easy/" target="_blank" rel="noopener">
+        <div class="res-top"><span class="res-name">NHK News Web Easy</span><span class="res-tag t-listen">简易阅读</span></div>
+        <div class="res-desc">NHK官方简易新闻，全文标注假名读音，附音频朗读，是最好的初级阅读材料。</div>
+        <div class="res-use">▸ 每天精读一篇，听音频跟读</div>
+      </a>
+    </div>
+  </div>
+
+  <footer>継続は力なり ─ 坚持就是力量</footer>
+</div>
+
+<script>
+(function () {
+  var KEY = 'jp-checkin-v2';
+  var memoryStore = null;
+
+  var YT = {
+    ci: 'https://www.youtube.com/@cijapanese',
+    misa: 'https://www.youtube.com/@JapaneseAmmowithMisa',
+    pod: 'https://www.youtube.com/@JapanesePod101',
+    mori: 'https://www.youtube.com/@nihongonomori2013',
+    miku: 'https://www.youtube.com/@mikurealjapanese',
+    nhk: 'https://www3.nhk.or.jp/news/easy/'
+  };
+
+  function defaultTasks() {
+    return [
+      { cat: '単語 · 词汇', name: 'Anki 新学 20 个 N4 单词', detail: '先复习到期卡片，再学新词', mins: '20分', done: false },
+      { cat: '文法 · 语法', name: '教材精读一课', detail: '《みんなの日本語》课文 + 语法笔记整理', mins: '30分', done: false },
+      { cat: '聴解 · 听力', name: 'Comprehensible Japanese 看 1～2 集', detail: '不开字幕先听一遍，再开字幕确认', mins: '20分', link: YT.ci, linkText: '▶ 打开频道', done: false },
+      { cat: '読解 · 阅读', name: 'NHK Web Easy 精读一篇', detail: '查生词，跟音频朗读一遍', mins: '15分', link: YT.nhk, linkText: '▶ 打开网站', done: false },
+      { cat: '漢字 · 汉字', name: '复习 10 个汉字', detail: '写一遍，记住读音（音读+训读）', mins: '15分', done: false }
+    ];
+  }
+
+  var weekdaySpecials = [
+    { name: '周日小测：做一组 N4 模拟题', detail: '日本語の森有真题讲解视频', mins: '25分', link: YT.mori, linkText: '▶ 日本語の森' },
+    { name: '周一加餐：Misa 语法课一集', detail: '跟教材进度选对应语法点', mins: '15分', link: YT.misa, linkText: '▶ Misa 频道' },
+    { name: '周二加餐：影子跟读练习', detail: '选今天听过的音频，跟读模仿 5 分钟', mins: '10分' },
+    { name: '周三加餐：Miku 日常口语一集', detail: '学几句自然的日常表达', mins: '15分', link: YT.miku, linkText: '▶ Miku 频道' },
+    { name: '周四加餐：造句练习', detail: '用本周学的语法写 5 个例句', mins: '15分' },
+    { name: '周五加餐：JapanesePod101 一集', detail: '看 N5/N4 播放列表', mins: '15分', link: YT.pod, linkText: '▶ Pod101 频道' },
+    { name: '周六复盘：整理本周错题和生词', detail: '把没记住的词重新加入 Anki', mins: '25分' }
+  ];
+
+  function loadState() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) return JSON.parse(raw);
+    } catch (e) { }
+    return memoryStore || { stamps: {}, tasks: [], taskDate: '' };
+  }
+  function saveState(s) {
+    memoryStore = s;
+    try { localStorage.setItem(KEY, JSON.stringify(s)); } catch (e) { }
+  }
+
+  function dateKey(d) {
+    return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  }
+
+  var state = loadState();
+  var now = new Date();
+  var todayKey = dateKey(now);
+
+  if (state.taskDate !== todayKey || !state.tasks.length) {
+    var tasks = defaultTasks();
+    var sp = weekdaySpecials[now.getDay()];
+    tasks.push({ cat: '今日のスペシャル · 本日特别任务', name: sp.name, detail: sp.detail, mins: sp.mins, link: sp.link, linkText: sp.linkText, special: true, done: false });
+    state.tasks = tasks;
+    state.taskDate = todayKey;
+    saveState(state);
+  }
+
+  var weekdaysJp = ['日', '月', '火', '水', '木', '金', '土'];
+  document.getElementById('todayText').textContent =
+    now.getFullYear() + '年' + (now.getMonth() + 1) + '月' + now.getDate() + '日（' + weekdaysJp[now.getDay()] + '）';
+
+  var examYear = now > new Date(now.getFullYear(), 11, 6, 23, 59) ? now.getFullYear() + 1 : now.getFullYear();
+  var exam = new Date(examYear, 11, 6);
+  var days = Math.ceil((exam - new Date(now.getFullYear(), now.getMonth(), now.getDate())) / 86400000);
+  document.getElementById('countdownNum').textContent = days;
+
+  var phases = [
+    { months: [6, 7], tag: '第一階段', desc: '打基础：假名熟练 + N5核心语法 + 800个N5词汇（《みんなの日本語 初級I》）', idx: 0 },
+    { months: [8, 9], tag: '第二階段', desc: '攻克N4：N4语法约100个语法点 + 词汇扩充到1500词 + 300个汉字（《初級II》+《新完全マスター》）', idx: 1 },
+    { months: [10, 11], tag: '第三階段', desc: '专项强化：分科目刷题（词汇语法/阅读/听力），开始做历年真题、分析错题', idx: 2 },
+    { months: [12], tag: '冲刺階段', desc: '全真模拟，严格计时，查漏补缺，调整状态迎接考试！', idx: 3 }
+  ];
+  var m = now.getMonth() + 1;
+  var phase = phases[0];
+  for (var i = 0; i < phases.length; i++) {
+    if (phases[i].months.indexOf(m) !== -1) { phase = phases[i]; break; }
+    if (m < 6) phase = phases[0];
+  }
+  document.getElementById('phaseTag').textContent = phase.tag;
+  document.getElementById('phaseDesc').textContent = phase.desc;
+  var trackSpans = document.getElementById('phaseTrack').children;
+  for (var j = 0; j <= phase.idx && j < trackSpans.length; j++) trackSpans[j].className = 'on';
+
+  var words = [
+    ['約束', 'やくそく', '约定'], ['経験', 'けいけん', '经验'], ['準備', 'じゅんび', '准备'],
+    ['予定', 'よてい', '预定·计划'], ['遠慮', 'えんりょ', '客气·顾虑'], ['案内', 'あんない', '向导·指引'],
+    ['世話', 'せわ', '照顾'], ['挨拶', 'あいさつ', '寒暄·打招呼'], ['興味', 'きょうみ', '兴趣'],
+    ['説明', 'せつめい', '说明'], ['相談', 'そうだん', '商量'], ['連絡', 'れんらく', '联系'],
+    ['予約', 'よやく', '预约'], ['用意', 'ようい', '准备'], ['返事', 'へんじ', '回复·答复'],
+    ['都合', 'つごう', '方便·情况'], ['気分', 'きぶん', '心情'], ['景色', 'けしき', '景色'],
+    ['丁寧', 'ていねい', '礼貌·细心'], ['熱心', 'ねっしん', '热心·专注'],
+    ['複雑', 'ふくざつ', '复杂'], ['簡単', 'かんたん', '简单'], ['特別', 'とくべつ', '特别'],
+    ['続ける', 'つづける', '继续'], ['覚える', 'おぼえる', '记住'], ['慣れる', 'なれる', '习惯'],
+    ['頑張る', 'がんばる', '努力·加油'], ['褒める', 'ほめる', '夸奖'], ['驚く', 'おどろく', '吃惊'],
+    ['楽しみ', 'たのしみ', '期待·乐趣'], ['気持ち', 'きもち', '心情·感觉']
+  ];
+  var dayIndex = Math.floor(now.getTime() / 86400000) % words.length;
+  document.getElementById('wordJp').textContent = words[dayIndex][0];
+  document.getElementById('wordReading').textContent = words[dayIndex][1];
+  document.getElementById('wordCn').textContent = words[dayIndex][2];
+
+  function renderTasks() {
+    var list = document.getElementById('taskList');
+    list.innerHTML = '';
+    var lastCat = null;
+    state.tasks.forEach(function (t, i) {
+      if (t.cat && t.cat !== lastCat) {
+        var cat = document.createElement('div');
+        cat.className = 'cat-label';
+        cat.textContent = t.cat;
+        list.appendChild(cat);
+        lastCat = t.cat;
+      }
+      var row = document.createElement('div');
+      row.className = 'task' + (t.done ? ' done' : '');
+      var box = document.createElement('span');
+      box.className = 'box';
+      box.textContent = t.done ? '✓' : '';
+      var body = document.createElement('span');
+      body.className = 'body';
+      var name = document.createElement('span');
+      name.className = 'name';
+      name.textContent = t.name;
+      if (t.special) {
+        var badge = document.createElement('span');
+        badge.className = 'special-badge';
+        badge.textContent = 'SPECIAL';
+        name.appendChild(badge);
+      }
+      body.appendChild(name);
+      if (t.detail) {
+        var detail = document.createElement('span');
+        detail.className = 'detail';
+        detail.textContent = t.detail;
+        body.appendChild(detail);
+      }
+      if (t.link) {
+        var link = document.createElement('a');
+        link.className = 'link';
+        link.href = t.link;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = t.linkText || '▶ 打开链接';
+        link.addEventListener('click', function (e) { e.stopPropagation(); });
+        body.appendChild(link);
+      }
+      var mins = document.createElement('span');
+      mins.className = 'mins';
+      mins.textContent = t.mins || '';
+      var del = document.createElement('button');
+      del.className = 'del';
+      del.textContent = '×';
+      del.setAttribute('aria-label', '删除任务');
+      del.addEventListener('click', function (e) {
+        e.stopPropagation();
+        state.tasks.splice(i, 1);
+        saveState(state);
+        renderTasks();
+      });
+      row.addEventListener('click', function () {
+        t.done = !t.done;
+        saveState(state);
+        renderTasks();
+      });
+      row.appendChild(box); row.appendChild(body); row.appendChild(mins); row.appendChild(del);
+      list.appendChild(row);
+    });
+    var doneCount = state.tasks.filter(function (t) { return t.done; }).length;
+    var pct = state.tasks.length ? Math.round(doneCount / state.tasks.length * 100) : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressText').textContent =
+      state.tasks.length ? '今日完成 ' + doneCount + ' / ' + state.tasks.length + '（' + pct + '%）' : '暂无任务，先添加一个吧';
+  }
+
+  document.getElementById('addTaskBtn').addEventListener('click', addTask);
+  document.getElementById('newTaskInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') addTask();
+  });
+  function addTask() {
+    var input = document.getElementById('newTaskInput');
+    var v = input.value.trim();
+    if (!v) return;
+    state.tasks.push({ cat: '自由課題 · 自定义', name: v, mins: '', done: false });
+    input.value = '';
+    saveState(state);
+    renderTasks();
+  }
+
+  function renderStamp() {
+    var btn = document.getElementById('hankoBtn');
+    if (state.stamps[todayKey]) {
+      btn.classList.add('stamped');
+      document.getElementById('hankoMain').textContent = '完';
+      document.getElementById('hankoSub').textContent = (now.getMonth() + 1) + '.' + now.getDate();
+      document.getElementById('stampHint').textContent = '今日已打卡，お疲れ様でした！';
+    } else {
+      btn.classList.remove('stamped');
+      document.getElementById('hankoMain').textContent = '打卡';
+      document.getElementById('hankoSub').textContent = 'CHECK IN';
+      document.getElementById('stampHint').textContent = '完成今日学习后，盖上你的印章';
+    }
+  }
+  document.getElementById('hankoBtn').addEventListener('click', function () {
+    if (state.stamps[todayKey]) return;
+    state.stamps[todayKey] = true;
+    saveState(state);
+    renderStamp();
+    renderStats();
+    renderCalendar();
+  });
+
+  function renderStats() {
+    var keys = Object.keys(state.stamps);
+    document.getElementById('totalNum').textContent = keys.length;
+    var monthPrefix = todayKey.slice(0, 7);
+    document.getElementById('monthNum').textContent =
+      keys.filter(function (k) { return k.indexOf(monthPrefix) === 0; }).length;
+    var streak = 0;
+    var cursor = new Date(now);
+    if (!state.stamps[dateKey(cursor)]) cursor.setDate(cursor.getDate() - 1);
+    while (state.stamps[dateKey(cursor)]) {
+      streak++;
+      cursor.setDate(cursor.getDate() - 1);
+    }
+    document.getElementById('streakNum').textContent = streak;
+  }
+
+  var calYear = now.getFullYear(), calMonth = now.getMonth();
+  function renderCalendar() {
+    document.getElementById('calMonth').textContent = calYear + '年 ' + (calMonth + 1) + '月';
+    var cal = document.getElementById('calendar');
+    cal.innerHTML = '';
+    ['日', '一', '二', '三', '四', '五', '六'].forEach(function (w) {
+      var el = document.createElement('div');
+      el.className = 'wd';
+      el.textContent = w;
+      cal.appendChild(el);
+    });
+    var first = new Date(calYear, calMonth, 1).getDay();
+    var total = new Date(calYear, calMonth + 1, 0).getDate();
+    for (var i = 0; i < first; i++) {
+      var pad = document.createElement('div');
+      pad.className = 'day empty';
+      cal.appendChild(pad);
+    }
+    for (var d = 1; d <= total; d++) {
+      var el = document.createElement('div');
+      el.className = 'day';
+      var key = calYear + '-' + String(calMonth + 1).padStart(2, '0') + '-' + String(d).padStart(2, '0');
+      if (state.stamps[key]) { el.classList.add('stamped'); el.textContent = '完'; }
+      else el.textContent = d;
+      if (key === todayKey) el.classList.add('today-ring');
+      cal.appendChild(el);
+    }
+  }
+  document.getElementById('prevMonth').addEventListener('click', function () {
+    calMonth--; if (calMonth < 0) { calMonth = 11; calYear--; }
+    renderCalendar();
+  });
+  document.getElementById('nextMonth').addEventListener('click', function () {
+    calMonth++; if (calMonth > 11) { calMonth = 0; calYear++; }
+    renderCalendar();
+  });
+
+  renderTasks();
+  renderStamp();
+  renderStats();
+  renderCalendar();
+})();
+</script>
+</body>
+</html>
